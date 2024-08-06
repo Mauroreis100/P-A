@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View,ScrollView,StatusBar } from 'react-native'
 import React from 'react'
+import { Redirect, router } from "expo-router";
 import Picture from '../../components/Picture';
 import { SafeAreaView } from "react-native-safe-area-context";
 import FloatingButton from '@/components/FloatingButton';
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <SafeAreaView className="bg-grey ">
       <ScrollView>
@@ -17,7 +18,7 @@ const Home = () => {
             </View>
          </ScrollView>
          <StatusBar hidden={false} barStyle="dark-content" backgroundColor="#073F82"/>
-         <FloatingButton />
+         <FloatingButton  onPress={() => navigation.navigate('Publicar')} />
     </SafeAreaView>
   )
 }
