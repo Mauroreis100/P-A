@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton';
 
-const Publicar = () => {
+const Publicar = ({ route, navigation }) => {
+  const { objectoState } = route.params;
     const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     nome: "",
@@ -12,6 +13,7 @@ const Publicar = () => {
     numeros:[],
     email:''
   });
+  const objState=`Nome do ${objectoState}`
   return (
     <SafeAreaView className="bg-primary justify-center items-center">
     <ScrollView
@@ -20,13 +22,13 @@ const Publicar = () => {
     }}
   >
       <FormField
-      title="Nome do perdido"
+      title={objState}
       value={form.nome}
       handleChangeText={(e) => setForm({ ...form, nome: e })}
       otherStyles="mt-7">
       </FormField>
       <FormField
-      title="Data do Perdido"
+      title="Data"
       value={form.nome}
       handleChangeText={(e) => setForm({ ...form, nome: e })}
       otherStyles="mt-7">
