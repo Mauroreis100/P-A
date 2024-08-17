@@ -1,16 +1,30 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { onAuthStateChanged } from 'firebase/auth';
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
+import { loginUser } from '../api/authFunctions'; // Adjust the path as necessary
 const SignIn = () =>{
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+  const [isLogin, setIsLogin]=useState(true);
+  const [user,setUser]=useState(null)
+
+  const handleLogin = async () => {
+    try {
+      const user = await loginUser(form.email, form.password);
+      console.log('Logged in user:', user);
+      router.replace('/home')
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+  
   return (
    <SafeAreaView className="">
         <View className="bg-white h-1/6 justify-center items-center">
@@ -45,7 +59,7 @@ const SignIn = () =>{
           <CustomButton
             title="Entrar"
             containerStyles="mt-8 w-80"
-           
+           handlePress={handleLogin}
           />
           <View className="flex justify-center pt-5 flex-row gap-2">
           <Link href="/home" className="text-lg font-psemibold text-secondary  underline underline-offset-8">
