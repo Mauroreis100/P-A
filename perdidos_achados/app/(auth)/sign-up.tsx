@@ -5,6 +5,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
+import { registerUser } from '../api/authFunctions'; // Adjust the path as necessary
+
 const SignUp = () =>{
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -12,6 +14,16 @@ const SignUp = () =>{
     email: "",
     password: "",
   });
+  const handleRegister = async () => {
+    try {
+      const user = await registerUser(form.email, form.password);
+      console.log('Registered user:', user);
+      // Navigate to another screen or update UI based on successful registration
+    } catch (error) {
+      console.error('Registration failed:', error);
+    }
+  };
+
   return (
    <SafeAreaView className="">
         <View className="bg-white h-1/6 justify-center items-center">
@@ -53,7 +65,7 @@ const SignUp = () =>{
           <CustomButton
             title="Cadastrar"
             containerStyles="mt-8 w-80"
-           
+           handlePress={handleRegister}
           />
         </View>
       </SafeAreaView>
