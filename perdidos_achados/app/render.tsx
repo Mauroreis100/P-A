@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth';
-import {auth} from "./api/firebaseConfig"
+import {auth} from "../api/firebaseConfig"
 import Home from './(tabs)/home';
 import SignIn from './(auth)/sign-in';
 const Render = () => {

@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { registerUser } from '../api/authFunctions'; // Adjust the path as necessary
+import { registerUser } from '../../api/authFunctions'; // Adjust the path as necessary
 
 const SignUp = () =>{
   const [isSubmitting, setSubmitting] = useState(false);
