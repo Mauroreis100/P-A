@@ -18,13 +18,12 @@ const Home = ({navigation}) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}>
-<SelectOptionModal onPress={() => navigation.navigate('Publicar',{
-  objectoState:'achado'
-})} />
-<SelectOptionModal onPress={() => navigation.navigate('Publicar',{
-  objectoState:'perdido'
-})} />
-          
+            <SelectOptionModal onPress={() => navigation.navigate('Publicar',{
+              objectoState:'achado'
+            })} />
+            <SelectOptionModal onPress={() => navigation.navigate('Publicar',{
+              objectoState:'perdido'
+            })} />
         </Modal>
       <ScrollView>
             <View className="items-center">
