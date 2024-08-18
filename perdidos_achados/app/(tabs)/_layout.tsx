@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from "../(tabs)/home";
 import Faq from "../(tabs)/faq";
 import Publicar from './publicar';
+import Contact_Info_Form from './contact_info_form';
 import './gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -54,6 +55,7 @@ const TabLayout = () => {
         <Stack.Screen name="Home" component={MyDrawer} options={{ headerShown: false }}/>
         <Stack.Screen name="FAQ" component={Faq} />
         <Stack.Screen name="Publicar" component={Publicar} />
+        <Stack.Screen name="Contact_Info" component={Contact_Info_Form} />
       </Stack.Navigator>
     );
   }
