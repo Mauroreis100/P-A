@@ -4,10 +4,14 @@ import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
+import * as ImagePicker from 'expo-image-picker';
+import ImageViewer from '@/components/Thumbnail';
 //TODO: Colocar o 
 const Publicar = ({ route, navigation }) => {
   const { objectoState } = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImageText, setSelectedImageText] = useState("No Photo");
   const [form, setForm] = useState({
     nome: "",
     data: "",
@@ -18,13 +22,30 @@ const Publicar = ({ route, navigation }) => {
   const objState=`Nome do ${objectoState}`
   const [date, setDate] = useState(dayjs());
   const [modalVisible, setModalVisible] = useState(false);
+
+  const pickImageAsync = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setSelectedImage(result.assets[0].uri);
+      setSelectedImageText(result.assets[0].fileName)
+      console.log(result.assets[0]);
+    } else {
+      alert('You did not select any image.');
+    }
+  };
+
   return (
+    <ScrollView>
     <SafeAreaView className="bg-primary justify-center items-center">
-    <ScrollView
-    contentContainerStyle={{
-      height: "100%",
-    }}
-  >
+    <ImageViewer selectedImage={selectedImage} pictureText={selectedImageText}/>
+    <CustomButton
+            title="Carregar Foto"
+            containerStyles="mt-8 w-80"
+            handlePress={() => pickImageAsync()}/>
+
       <FormField
       title={objState}
       value={form.nome}
@@ -81,9 +102,9 @@ const Publicar = ({ route, navigation }) => {
             title="Próximo"
             containerStyles="mt-8 w-80"
             handlePress={() => navigation.navigate('Contact_Info',{form})}/>
-    </ScrollView>
         <StatusBar hidden={false} barStyle="dark-content" backgroundColor="#073F82"/>
     </SafeAreaView>
+    </ScrollView>
   )
 }
 
