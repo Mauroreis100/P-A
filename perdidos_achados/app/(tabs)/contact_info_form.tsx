@@ -13,15 +13,17 @@ const Contact_Info_Form = ({ route, navigation }) => {
   const itemDetails = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
+    foto: itemDetails.form.foto,
     nome: itemDetails.form.nome,
     data: itemDetails.form.data,
     localizacao:itemDetails.form.localizacao,
     numero:"",
     email:""
   });
-  const { nome, data, localizacao,numero,email } = form;
+  const { foto,nome, data, localizacao,numero,email } = form;
   const handleSubmit = async () => {
     const newItem = {
+      foto,
       nome,
       data,
       localizacao,

@@ -13,10 +13,12 @@ const Publicar = ({ route, navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageText, setSelectedImageText] = useState("No Photo");
   const [form, setForm] = useState({
+    foto:{},
     nome: "",
     data: "",
+    cor:"",
     localizacao:"",
-    numeros:[],
+    numero:0,
     email:""
   });
   const objState=`Nome do ${objectoState}`
@@ -31,7 +33,8 @@ const Publicar = ({ route, navigation }) => {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setSelectedImageText(result.assets[0].fileName)
-      console.log(result.assets[0]);
+      setForm({ ...form, foto:  result})
+      console.log(form.foto);
     } else {
       alert('You did not select any image.');
     }
@@ -44,7 +47,10 @@ const Publicar = ({ route, navigation }) => {
     <CustomButton
             title="Carregar Foto"
             containerStyles="mt-8 w-80"
-            handlePress={() => pickImageAsync()}/>
+            handlePress={() => {
+              pickImageAsync()
+              
+            }}/>
 
       <FormField
       title={objState}

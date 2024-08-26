@@ -4,6 +4,8 @@ import { Redirect, router } from "expo-router";
 import React from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../api/firebaseConfig'; // 
 
 const Welcome = () => {
   return (
