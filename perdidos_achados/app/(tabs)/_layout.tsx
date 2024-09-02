@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import {SignIn} from '../(auth)/sign-in';
 import Home from "../(tabs)/home";
 import Faq from "../(tabs)/faq";
 import Publicar from './publicar';
@@ -11,41 +12,18 @@ import Contact_Info_Form from './contact_info_form';
 import './gesture-handler';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { AuthContext } from '@/contexts/AuthContext';
+import CustomDrawerContent from '@/components/LogOutCustomDrawer';
 const TabLayout = () => {
+  const { user, logout } = useContext(AuthContext);
   const Drawer = createDrawerNavigator();
   const Stack = createStackNavigator();
-/*   function StackNavigator() {
-    return(
-    <>
-    <Stack>
-      <Stack.Screen
-        name="home"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="faq"
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="publicar"
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack>
-    <StatusBar backgroundColor="#161622" style="light" />
-  </>
-  )
-  } */
   function MyDrawer() {
     return (
-      <Drawer.Navigator initialRouteName='Main'>
-        <Drawer.Screen name="Main" component={Home} />
+      <Drawer.Navigator initialRouteName='Main' drawerContent={(props) => <CustomDrawerContent {...props} />}>
+        <Drawer.Screen name="Main"component={Home} />
         <Drawer.Screen name="FAQ" component={Faq} />
+
       </Drawer.Navigator>
     )
   }

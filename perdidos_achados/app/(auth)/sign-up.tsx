@@ -18,9 +18,16 @@ const SignUp = () =>{
     try {
       const user = await registerUser(form.email, form.password);
       console.log('Registered user:', user);
-      // Navigate to another screen or update UI based on successful registration
+      router.replace('/home');
     } catch (error) {
-      console.error('Registration failed:', error);
+      if(error.code==="auth/email-already-in-use"){
+        alert("Email already in use. Please choose a different email.");
+      }else if(error.code==="auth/weak-password"){
+        alert("Palavra-passe fraca. Por-favor insira uma mais forte.");
+      }else{
+        console.error('Registration failed:', error.message);
+        
+      }
     }
   };
 

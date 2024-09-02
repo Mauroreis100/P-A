@@ -1,13 +1,15 @@
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Redirect, router } from "expo-router";
-import React from 'react'
+import React, { useContext } from 'react'
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "@/components/CustomButton";
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
+import { AuthContext } from "@/contexts/AuthContext";
 
 const Welcome = () => {
+  const { user, logout } = useContext(AuthContext);
   return (
       <SafeAreaView className="bg-white">
         <ScrollView
@@ -26,7 +28,16 @@ const Welcome = () => {
             <View className="pt-40"> 
                 {/* Isso aqui vai me dar stress */}
         <CustomButton
-            handlePress={() => router.push("/sign-in")}
+            handlePress={() => {
+if(user){
+  console.log(user)
+  router.push("/home")
+}else{
+  router.push("/sign-in")
+  
+}
+            }
+          }
                     title="Começar"
                     containerStyles="w-full mt-7"
                 />

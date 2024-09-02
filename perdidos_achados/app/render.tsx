@@ -4,8 +4,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 import {auth} from "../api/firebaseConfig"
 import Home from './(tabs)/home';
 import SignIn from './(auth)/sign-in';
-const Render = () => {
-    const [user, setUser] = useState(null);
+const Render = (user) => {
+  setUser(user)
+    const [userAuth, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
   
     useEffect(() => {

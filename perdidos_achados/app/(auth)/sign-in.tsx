@@ -1,11 +1,12 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { loginUser } from '../../api/authFunctions'; // Adjust the path as necessary
+import { AuthContext } from '../../contexts/AuthContext';
 const SignIn = () =>{
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -14,17 +15,35 @@ const SignIn = () =>{
   });
   const [isLogin, setIsLogin]=useState(true);
   const [user,setUser]=useState(null)
+  const { login } = useContext(AuthContext);
 
+  const [loading, setLoading] = useState(true);
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const user = await loginUser(form.email, form.password);
       console.log('Logged in user:', user);
       router.replace('/home')
     } catch (error) {
-      console.error('Login failed:', error);
+      setLoading(false)
+      if(error.code==="auth/user-not-found" || error.code==="auth/wrong-password"){
+        alert("Invalid email or password. Please try again.");
+      }else if(error.code==="auth/too-many-requests"){
+        alert("Too many unsuccessful login attemps. Please try again later.")
+      }else{
+        alert('Login failed:', error.message);
+      }
+    }finally{
+      setLoading(false);
     }
   };
-  
+  useEffect(() => {
+    handleLogin();
+  }, []); 
+  if (loading) {
+    return <Text>Autenticando</Text>;
+  }
+
   return (
    <SafeAreaView className="">
         <View className="bg-white h-1/6 justify-center items-center">
