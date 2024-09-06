@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {SignIn} from '../(auth)/sign-in';
 import Home from "../(tabs)/home";
 import Faq from "../(tabs)/faq";
+import ItemShow from "../(tabs)/ItemShow";
 import Publicar from './publicar';
 import Contact_Info_Form from './contact_info_form';
 import './gesture-handler';
@@ -34,6 +35,7 @@ const TabLayout = () => {
         <Stack.Screen name="FAQ" component={Faq} />
         <Stack.Screen name="Publicar" component={Publicar} />
         <Stack.Screen name="Contact_Info" component={Contact_Info_Form} />
+        <Stack.Screen name="ItemShow" component={ItemShow} />
       </Stack.Navigator>
     );
   }
