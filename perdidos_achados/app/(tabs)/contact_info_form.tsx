@@ -8,11 +8,12 @@ import { router } from 'expo-router';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 
-//TODO: Colocar o 
+//TODO: Colocar o tipo de item.
 const Contact_Info_Form = ({ route, navigation }) => {
   const itemDetails = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
+    estado: itemDetails.form.estado,
     foto: itemDetails.form.foto,
     nome: itemDetails.form.nome,
     data: itemDetails.form.data,
@@ -20,9 +21,10 @@ const Contact_Info_Form = ({ route, navigation }) => {
     numero:"",
     email:""
   });
-  const { foto,nome, data, localizacao,numero,email } = form;
+  const { estado,foto,nome, data, localizacao,numero,email } = form;
   const handleSubmit = async () => {
     const newItem = {
+      estado,
       foto,
       nome,
       data,

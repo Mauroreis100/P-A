@@ -7,6 +7,7 @@ import FloatingButton from '@/components/FloatingButton';
 import SelectOptionModal from '@/components/SelectOptionModal';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
+import ListItem from '@/components/ListItem';
 const Home = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -52,9 +53,7 @@ const Home = ({navigation}) => {
             <SelectOptionModal onPress={() => navigation.navigate('Publicar',{
               objectoState:'achado'
             })} />
-            <SelectOptionModal onPress={() => navigation.navigate('Publicar',{
-              objectoState:'perdido'
-            })} />
+            <SelectOptionModal onPress={() => navigation.navigate('Publicar',{objectoState:'perdido'})} />
         </Modal>
       <ScrollView>
             <View className="items-center">
@@ -62,15 +61,14 @@ const Home = ({navigation}) => {
         data={data}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-  
-          <Picture nome={item.nome} foto={(item.foto.assets[0].uri)} descricao={`Data de ocorrência: Data e Hora${item.data}\nLocalização: ${item.localizacao}`}></Picture>
+       <ListItem estado={item.estado} name={item.nome} date={item.data}/>
         )}
       />
-        
+   
             </View>
          </ScrollView>
          <StatusBar hidden={false} barStyle="dark-content" backgroundColor="#073F82"/>
-         <FloatingButton  onPress={() => setModalVisible(!modalVisible)} />
+         <FloatingButton onPress={() => setModalVisible(!modalVisible)} />
     </SafeAreaView>
   )
 }

@@ -12,7 +12,10 @@ const Publicar = ({ route, navigation }) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageText, setSelectedImageText] = useState("No Photo");
+  const objState=`Nome do ${objectoState}`
+  //TODO: Change data format to timestamp e ficar igual ao modified, created. YYYY-MM-DDTHH:mm:ss.sssZ
   const [form, setForm] = useState({
+    estado: objectoState,
     foto:{},
     nome: "",
     data: "",
@@ -21,7 +24,6 @@ const Publicar = ({ route, navigation }) => {
     numero:0,
     email:""
   });
-  const objState=`Nome do ${objectoState}`
   const [date, setDate] = useState(dayjs());
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -29,7 +31,7 @@ const Publicar = ({ route, navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
     });
-
+    console.log("yuu"+objectoState);
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setSelectedImageText(result.assets[0].fileName)
