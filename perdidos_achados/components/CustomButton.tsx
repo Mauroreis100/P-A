@@ -1,5 +1,5 @@
 import { ActivityIndicator, Text, TouchableOpacity } from "react-native";
-
+//TODO: MUDAR A COR POR VARIÁVEL
 const CustomButton = ({
   title,
   handlePress,
