@@ -8,7 +8,24 @@ import SelectOptionModal from '@/components/SelectOptionModal';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 import ListItem from '@/components/ListItem';
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 const Home = ({navigation}) => {
+/*  const [isLoged, setLoggedUser] = useState({
+
+    isLogged: false,
+  });
+  const getCurrentUser = () => {
+    const auth=getAuth()
+    if (auth!=null){
+      setLoggedUser({ ...loggedUser, publicador: auth, isLogged: true })
+      return auth.currentUser;
+      
+    }
+    return auth;
+  }
+  getCurrentUser()
+  TODO: Show a different component for all the user's posts
+  */
   const [modalVisible, setModalVisible] = useState(false);
 
   const [data, setData] = useState([]);
@@ -60,14 +77,14 @@ const Home = ({navigation}) => {
         data={data}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-       <ListItem estado={item.estado} name={item.nome} date={item.data} onPress={()=>{
-         //TODO: COlocar pagination contada tipo mostrar só 10 itens p/ day
+          <ListItem estado={item.estado} name={item.nome} date={item.data} onPress={()=>{
+            //TODO: COlocar pagination contada tipo mostrar só 10 itens p/ day
          console.log(item.id)
          navigation.navigate('ItemShow',{id:item.id})
        }
       }/>
-        )}
-      />
+    )}
+    />
    
             </View>
          </ScrollView>

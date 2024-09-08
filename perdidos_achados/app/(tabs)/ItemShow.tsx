@@ -5,12 +5,21 @@ import { collection, doc, addDoc, getDoc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 import CustomButton from '@/components/CustomButton';
 import Picture from '@/components/Picture';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const ItemShow = ({ route, navigation }) => {
     const objectoID=route.params.id;
-    
+    const getCurrentUser = () => {
+      const auth=getAuth()
+      return auth.currentUser;
+    }
+    const user=getCurrentUser();
+    const [postCondition,setPostContidion]=useState(false)
+
+
     const [loading, setLoading] = useState(true);
     const [showAppOptions, setShowAppOptions] = useState(false);
     const [form, setForm] = useState({
+        publicadorID: '',
         estado:'',
         foto:'',
         nome:'',
@@ -25,7 +34,9 @@ const ItemShow = ({ route, navigation }) => {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 console.log("Document data:", docSnap.data());
+                console.log(user?.uid+"==="+docSnap.data().publicadorID)
                 setForm({ ...form, 
+                    publicadorID: docSnap.data().publicadorID,
                     estado:docSnap.data().estado,
                     foto:docSnap.data().estado,
                     data:docSnap.data().data,
@@ -34,7 +45,9 @@ const ItemShow = ({ route, navigation }) => {
                     nome:docSnap.data().nome,
                     numero: docSnap.data().numero 
                 })
-               
+                if(user?.uid===docSnap.data().publicadorID){
+                  setPostContidion(true);
+                }
               } else {
                 // docSnap.data() will be undefined in this case
                 console.log("No such document!");
@@ -92,7 +105,8 @@ const handleRetrieve = ()=>{
   }
   return (
     <View>
-    <Picture estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+{postCondition ? <Picture titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+    : <Picture titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture> }
     </View>
   )
 }

@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { router } from 'expo-router';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 //TODO: COlocar quem foi o user que publicou o item
 
