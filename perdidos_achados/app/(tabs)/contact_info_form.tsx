@@ -1,5 +1,5 @@
 import { SafeAreaView, Modal, ScrollView, StatusBar, StyleSheet, Text, View, Alert } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton';
 import DateTimePicker from 'react-native-ui-datepicker';
@@ -7,12 +7,20 @@ import dayjs from 'dayjs';
 import { router } from 'expo-router';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
-//TODO: Colocar o tipo de item.
+//TODO: COlocar quem foi o user que publicou o item
+
 const Contact_Info_Form = ({ route, navigation }) => {
+const getCurrentUser = () => {
+  const auth=getAuth()
+  return auth.currentUser;
+}
+  const user = getCurrentUser();
   const itemDetails = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
+    publicadorID: user?.uid,
     estado: itemDetails.form.estado,
     foto: itemDetails.form.foto,
     nome: itemDetails.form.nome,
@@ -21,9 +29,10 @@ const Contact_Info_Form = ({ route, navigation }) => {
     numero:"",
     email:""
   });
-  const { estado,foto,nome, data, localizacao,numero,email } = form;
+  const { publicadorID,estado,foto,nome, data, localizacao,numero,email } = form;
   const handleSubmit = async () => {
     const newItem = {
+      publicadorID,
       estado,
       foto,
       nome,
