@@ -91,7 +91,7 @@ const handleRetrieve = ()=>{
         //TODO: Reindivicações devem funcionai apenas para achados!          
          Alert.alert("Estado",'Reivindicação adicionada',[{text: 'OK', onPress: async () => {
           console.log('OK Pressed')
-          
+          //TODO: A primeira vez vs outras vezes, criar só quando necessário.
           try {
               const docRef = await addDoc(collection(db, 'reivindicacoes'), {
               objectoID: form.id,

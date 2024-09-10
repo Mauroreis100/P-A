@@ -44,8 +44,6 @@ data={data}
 keyExtractor={item => item.id}
 renderItem={({ item }) => (
   <ListItem estado={item.estado} name={item.nome} date={item.data} onPress={()=>{
-    //TODO: COlocar pagination contada tipo mostrar só 10 itens p/ day
- console.log(item.id)
  navigation.navigate('ItemShow',{id:item.id})
 }
 }/>

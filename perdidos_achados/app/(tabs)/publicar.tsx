@@ -6,7 +6,6 @@ import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from '@/components/Thumbnail';
-//TODO: Colocar o 
 const Publicar = ({ route, navigation }) => {
   const { objectoState } = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
@@ -31,12 +30,12 @@ const Publicar = ({ route, navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
     });
-    console.log("yuu"+objectoState);
+
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setSelectedImageText(result.assets[0].fileName)
       setForm({ ...form, foto:  result})
-      console.log(form.foto);
+      console.log("Detalhes da foto escolhida:"+form.foto);
     } else {
       alert('You did not select any image.');
     }
@@ -51,7 +50,6 @@ const Publicar = ({ route, navigation }) => {
             containerStyles="mt-8 w-80"
             handlePress={() => {
               pickImageAsync()
-              
             }}/>
 
       <FormField
@@ -84,7 +82,6 @@ const Publicar = ({ route, navigation }) => {
         onChange={(params) => {
           setDate(params.date)
           setForm({ ...form, data: dayjs(date).format('DD/MM/YY - HH:MM')})
-          console.log(date)
         }}
         timePicker='true'
   
