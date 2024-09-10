@@ -4,19 +4,20 @@ import { icons } from "../constants";
 import { Link } from 'expo-router';
 import CustomButton from './CustomButton';
 const Picture = (props) => {
-  const template = 'https://i5.walmartimages.com/asr/85a53698-2b3c-48b1-a238-52541ddb3ccd_1.4e374eb556fc18086b0b6bc1b08f94ee.jpeg?odnHeight=717&odnWidth=717&odnBg=FFFFFF'
+  const PlaceholderImage = require('../assets/images/no-photo.jpg');
+  const imageSource = JSON.stringify(props.foto)=='{}'  ? PlaceholderImage : { uri: JSON.parse(JSON.stringify(props.foto.assets[0].uri))}  ;
   /* 
+  TODO: Editar, Apahar e Ver Reindivicações 
      <CustomButton title={buttonTight} containerStyles="w-48 mt-4"/>
      Só renderiza se for owner da coisa.
      */
   return (
   <View>
         <View className="flex flex-col space-y-3 justify-center mb-8">
-          <Image
+
+         <Image
           style={[styles.tinyLogo]}
-            source={{ 
-              uri: props.foto 
-             }}
+            source={imageSource}
           />
 
         <Text className="font-bold mt-6">{props.nome}</Text>

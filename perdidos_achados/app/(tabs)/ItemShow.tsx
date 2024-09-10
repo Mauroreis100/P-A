@@ -14,15 +14,16 @@ const ItemShow = ({ route, navigation }) => {
     }
     const user=getCurrentUser();
     const [postCondition,setPostContidion]=useState(false)
-    const [foto, setFoto]=useState("");
-
+    //TODO: See how well the variable works
+    const [foto, setFoto]=useState({});
+    const PlaceholderImage = require('../../assets/images/no-photo.jpg');
     const [loading, setLoading] = useState(true);
     const [showAppOptions, setShowAppOptions] = useState(false);
     const [form, setForm] = useState({
       id:'',
         publicadorID: '',
         estado:'',
-        foto:'',
+        foto:{},
         nome:'',
         data:'',
         localizacao:'',
@@ -34,20 +35,23 @@ const ItemShow = ({ route, navigation }) => {
             const docRef = doc(db, "objecto", objectoID);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                console.log(user?.uid+"==="+docSnap.data().publicadorID)
-                setForm({ ...form, 
-                    id: docSnap.data().uid,
-                    publicadorID: docSnap.data().publicadorID,
-                    estado:docSnap.data().estado,
-                    foto:docSnap.data().estado,
-                    data:docSnap.data().data,
-                    localizacao:docSnap.data().localizacao,
-                    email:docSnap.data().email,
-                    nome:docSnap.data().nome,
-                    numero: docSnap.data().numero 
-                })
-                console.log((docSnap.data().foto.assets[0].uri))
+                console.log(foto)
+                console.log("Conteúdo: "+JSON.stringify(docSnap.data().foto))
+              if(!((JSON.stringify(docSnap.data().foto)).match(''))){
                 setFoto((docSnap.data().foto.assets[0].uri))
+                console.log("ENTROU"+(docSnap.data().foto.assets[0].uri))
+              }
+              setForm({ ...form, 
+                  id: objectoID,
+                  publicadorID: docSnap.data().publicadorID,
+                  estado:docSnap.data().estado,
+                  foto:docSnap.data().foto,
+                  data:docSnap.data().data,
+                  localizacao:docSnap.data().localizacao,
+                  email:docSnap.data().email,
+                  nome:docSnap.data().nome,
+                  numero: docSnap.data().numero 
+              })
                 if(user?.uid===docSnap.data().publicadorID){
                   setPostContidion(true);
 
@@ -65,27 +69,13 @@ const ItemShow = ({ route, navigation }) => {
       }
     }
 
-    /*const [reivindicacoes, setReivindicacoes] = useState({
+    const [reivindicacoes, setReivindicacoes] = useState({
       objectoID:form.id,
       usersID:[]
     });
-    const {usersID } = reivindicacoes;
-    const addRetrieve = async () => {
-      const newItem = {
-        objectoID,
-        usersID,
-        createdAt: new Date(),
-      };
   
-      try {
-        const docRef = await addDoc(collection(db, 'reivindicacoes'), newItem);
-        console.log('Document written with ID: ', docRef.id); //O OBJECTO PODE SER O ÚNICO ID
-      } catch (e) {
-        console.error('Error at retrieve document: ', e);
-        Alert.alert('Error', 'Something went wrong while retrieving the Document');
-      }
-    };
-*/
+
+
 
 
 const handleRetrieve = ()=>{
@@ -99,7 +89,22 @@ const handleRetrieve = ()=>{
       {text: 'Continuar', onPress: () => {
         //TODO: Colocar instruções que manda o current logged user ID para uma tabela de reidivicações do objecto
         //TODO: Reindivicações devem funcionai apenas para achados!          
-         Alert.alert("Estado",'Reivindicação adicionada',[{text: 'OK', onPress: async () => console.log('OK Pressed')},]) 
+         Alert.alert("Estado",'Reivindicação adicionada',[{text: 'OK', onPress: async () => {
+          console.log('OK Pressed')
+          
+          try {
+              const docRef = await addDoc(collection(db, 'reivindicacoes'), {
+              objectoID: form.id,
+              usersID:[user?.uid],
+              createdAt: new Date(),
+            });
+            console.log('Document written with ID: ', docRef.id); //O OBJECTO PODE SER O ÚNICO ID
+          } catch (e) {
+            console.error('Error at retrieve document: ', e);
+            Alert.alert('Error', 'Something went wrong while showing the Document');
+          }
+        
+         }},]) 
         //TODO:Esconder tela a seguir antes do Ok.
         Alert.alert("Contactos:",`Formas de contacto:\nEmail:${form.email} \nTelemóvel: ${form.numero}`)
       } 
@@ -133,8 +138,8 @@ const handleRetrieve = ()=>{
   }
   return (
     <View>
-{postCondition ? <Picture foto={foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
-    : <Picture foto={foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture> }
+{postCondition ? <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+    : <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture> }
     </View>
   )
 }
