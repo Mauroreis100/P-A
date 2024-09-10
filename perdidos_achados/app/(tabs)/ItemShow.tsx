@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Alert, Button } from 'react-native'
 import React, { useEffect, useState }  from 'react'
-import { collection, doc, addDoc, getDoc } from 'firebase/firestore';
+import { collection, doc, addDoc,getDocs, getDoc,query,where,updateDoc, arrayUnion, arrayRemove, limit } from 'firebase/firestore';
 
 import { db } from '../../api/firebaseConfig'; // 
 import CustomButton from '@/components/CustomButton';
@@ -16,6 +16,7 @@ const ItemShow = ({ route, navigation }) => {
     const [postCondition,setPostContidion]=useState(false)
     //TODO: See how well the variable works
     const [foto, setFoto]=useState({});
+    const [selected,setSelected]=useState({})
     const PlaceholderImage = require('../../assets/images/no-photo.jpg');
     const [loading, setLoading] = useState(true);
     const [showAppOptions, setShowAppOptions] = useState(false);
@@ -35,11 +36,8 @@ const ItemShow = ({ route, navigation }) => {
             const docRef = doc(db, "objecto", objectoID);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                console.log(foto)
-                console.log("Conteúdo: "+JSON.stringify(docSnap.data().foto))
               if(!((JSON.stringify(docSnap.data().foto)).match(''))){
                 setFoto((docSnap.data().foto.assets[0].uri))
-                console.log("ENTROU"+(docSnap.data().foto.assets[0].uri))
               }
               setForm({ ...form, 
                   id: objectoID,
@@ -86,25 +84,69 @@ const handleRetrieve = ()=>{
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'Continuar', onPress: () => {
+      {text: 'Continuar', onPress: async ()  => {
         //TODO: Colocar instruções que manda o current logged user ID para uma tabela de reidivicações do objecto
-        //TODO: Reindivicações devem funcionai apenas para achados!          
+        //TODO: Reindivicações devem funcionai apenas para achados!     
+        console.log("Continuar")    
+        try{
+          const docRef = doc(db, "reivindicacoes", objectoID);
+          
+          //  ACTUALIZANDO COM O ID DO DOCUMENTO, ONDE ESTÁ ESTE OBJECTO
+          //  if (selected) {
+            //const querySnapshot = await getDocs(collection(db,'reivindicacoes'));
+            //const washingtonRef = doc(db, "reivindicacoes");
+
+            
+            const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID),limit(1));
+            const querySnapshot = await getDocs(q);
+
+           querySnapshot.forEach(async (docs) => {
+            const cityRef = doc(db, 'reivindicacoes', docs.id);
+             await updateDoc(cityRef, {
+                 usersID: arrayUnion(user?.uid)
+             });
+            console.log(docs.id, " => ", docs.data());
+            
+          });
+
+          //}else{
+          //FUNCIONA MUITO BEM, CASO NÃO EXISTA!!
+          /*  console.log("Não existo, crie")
+                    try {
+                      const docRef = await addDoc(collection(db, 'reivindicacoes'), {
+                      objectoID: form.id,
+                      usersID:[user?.uid],
+                      createdAt: new Date(),
+                    });
+                    console.log('Document written with ID: ', docRef.id); //O OBJECTO PODE SER O ÚNICO ID
+                  } catch (e) {
+                    console.error('Error at retrieve document: ', e);
+                    Alert.alert('Error', 'Something went wrong while showing the Document');
+                  }
+                    */
+          //}
+
+          // Atomically add a new region to the "regions" array field.
+          //const docSnap = await getDoc(docRef);
+         /* if (docRef) {
+            // Atomically add a new region to the "regions" array field.
+              
+          }else{
+          } */
+          }catch(e){
+                console.log(e)
+          }finally{
+
+          } 
          Alert.alert("Estado",'Reivindicação adicionada',[{text: 'OK', onPress: async () => {
           console.log('OK Pressed')
           //TODO: A primeira vez vs outras vezes, criar só quando necessário.
-          try {
-              const docRef = await addDoc(collection(db, 'reivindicacoes'), {
-              objectoID: form.id,
-              usersID:[user?.uid],
-              createdAt: new Date(),
-            });
-            console.log('Document written with ID: ', docRef.id); //O OBJECTO PODE SER O ÚNICO ID
-          } catch (e) {
-            console.error('Error at retrieve document: ', e);
-            Alert.alert('Error', 'Something went wrong while showing the Document');
-          }
-        
-         }},]) 
+          
+           
+          
+           }},]) 
+
+
         //TODO:Esconder tela a seguir antes do Ok.
         Alert.alert("Contactos:",`Formas de contacto:\nEmail:${form.email} \nTelemóvel: ${form.numero}`)
       } 
