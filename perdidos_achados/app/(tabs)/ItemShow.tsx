@@ -14,11 +14,12 @@ const ItemShow = ({ route, navigation }) => {
     }
     const user=getCurrentUser();
     const [postCondition,setPostContidion]=useState(false)
-
+    const [foto, setFoto]=useState("");
 
     const [loading, setLoading] = useState(true);
     const [showAppOptions, setShowAppOptions] = useState(false);
     const [form, setForm] = useState({
+      id:'',
         publicadorID: '',
         estado:'',
         foto:'',
@@ -33,9 +34,9 @@ const ItemShow = ({ route, navigation }) => {
             const docRef = doc(db, "objecto", objectoID);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-                console.log("Document data:", docSnap.data());
                 console.log(user?.uid+"==="+docSnap.data().publicadorID)
                 setForm({ ...form, 
+                    id: docSnap.data().uid,
                     publicadorID: docSnap.data().publicadorID,
                     estado:docSnap.data().estado,
                     foto:docSnap.data().estado,
@@ -45,8 +46,11 @@ const ItemShow = ({ route, navigation }) => {
                     nome:docSnap.data().nome,
                     numero: docSnap.data().numero 
                 })
+                console.log((docSnap.data().foto.assets[0].uri))
+                setFoto((docSnap.data().foto.assets[0].uri))
                 if(user?.uid===docSnap.data().publicadorID){
                   setPostContidion(true);
+
                 }
               } else {
                 // docSnap.data() will be undefined in this case
@@ -60,6 +64,30 @@ const ItemShow = ({ route, navigation }) => {
         setLoading(false);
       }
     }
+
+    /*const [reivindicacoes, setReivindicacoes] = useState({
+      objectoID:form.id,
+      usersID:[]
+    });
+    const {usersID } = reivindicacoes;
+    const addRetrieve = async () => {
+      const newItem = {
+        objectoID,
+        usersID,
+        createdAt: new Date(),
+      };
+  
+      try {
+        const docRef = await addDoc(collection(db, 'reivindicacoes'), newItem);
+        console.log('Document written with ID: ', docRef.id); //O OBJECTO PODE SER O ÚNICO ID
+      } catch (e) {
+        console.error('Error at retrieve document: ', e);
+        Alert.alert('Error', 'Something went wrong while retrieving the Document');
+      }
+    };
+*/
+
+
 const handleRetrieve = ()=>{
   Alert.alert("Espera aí",'Esta acção permite reivindicar o objecto da publicação, como forma de controlar todos que se dizem dono(a), os seus dados (nome e contacto) estarão disponíveis para o dono da publicação, mesmo que decida retornar o manifesto. E só o publicador pode remover. Pretende partilhar os teus dados com o publicador?',
     [
@@ -70,7 +98,7 @@ const handleRetrieve = ()=>{
       },
       {text: 'Continuar', onPress: () => {
         //TODO: Colocar instruções que manda o current logged user ID para uma tabela de reidivicações do objecto
-
+        //TODO: Reindivicações devem funcionai apenas para achados!          
          Alert.alert("Estado",'Reivindicação adicionada',[{text: 'OK', onPress: async () => console.log('OK Pressed')},]) 
         //TODO:Esconder tela a seguir antes do Ok.
         Alert.alert("Contactos:",`Formas de contacto:\nEmail:${form.email} \nTelemóvel: ${form.numero}`)
@@ -105,8 +133,8 @@ const handleRetrieve = ()=>{
   }
   return (
     <View>
-{postCondition ? <Picture titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
-    : <Picture titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture> }
+{postCondition ? <Picture foto={foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+    : <Picture foto={foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture> }
     </View>
   )
 }
