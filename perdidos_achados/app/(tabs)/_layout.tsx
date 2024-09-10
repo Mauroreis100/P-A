@@ -15,6 +15,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { AuthContext } from '@/contexts/AuthContext';
 import CustomDrawerContent from '@/components/LogOutCustomDrawer';
+import MinhasPublicacoes from './minhas_publicacoes';
 const TabLayout = () => {
   const { user, logout } = useContext(AuthContext);
   const Drawer = createDrawerNavigator();
@@ -23,6 +24,7 @@ const TabLayout = () => {
     return (
       <Drawer.Navigator initialRouteName='Main' drawerContent={(props) => <CustomDrawerContent {...props} />}>
         <Drawer.Screen name="Main"component={Home} />
+        <Drawer.Screen name="Minhas Publicacoes" component={MinhasPublicacoes} />
         <Drawer.Screen name="FAQ" component={Faq} />
 
       </Drawer.Navigator>
