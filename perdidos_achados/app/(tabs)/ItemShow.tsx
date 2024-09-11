@@ -160,7 +160,7 @@ const ItemShow = ({ route, navigation }) => {
           async() => {
             const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID), limit(1));
             const querySnapshot = await getDocs(q);
-            //TIRAR ISTO, DEVE MOSTRAR "NÃO HÁ REIVINDICAÇÕES"
+            //TODO: CRIAR DOCUMENTO DE REINDIVICAÇÕES, para que mostra o número de reindivicações Multiplicidade: nenhum ou muitos"
             if (querySnapshot.size != 0) {
               querySnapshot.forEach(async (docs) => {
               console.log(docs)
