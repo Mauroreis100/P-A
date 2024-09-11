@@ -7,9 +7,9 @@ const Picture = (props) => {
   const PlaceholderImage = require('../assets/images/no-photo.jpg');
   const imageSource = JSON.stringify(props.foto)=='{}'  ? PlaceholderImage : { uri: JSON.parse(JSON.stringify(props.foto.assets[0].uri))}  ;
   /* 
-  TODO: Editar, Apahar e Ver Reindivicações 
-     <CustomButton title={buttonTight} containerStyles="w-48 mt-4"/>
-     Só renderiza se for owner da coisa.
+  TODO: Editar, Apagar e Ver Reindivicações 
+     //TODO: Cores dos botões
+     
      */
   return (
   <View>
@@ -25,6 +25,8 @@ const Picture = (props) => {
         <Text className="text-sm italic mt-4 truncate">Localização do {props.estado}: {props.localizacao}</Text>
         <Text className="text-sm italic mt-4 truncate">{props.data}</Text>
           <CustomButton handlePress={props.onPress} title={props.titulo} containerStyles="w-48 mt-4"/>
+          <CustomButton handlePress={props.onPress2} title={props.titulo2} containerStyles="w-48 mt-4"/>
+          <CustomButton handlePress={props.onPress3} title={props.titulo3} containerStyles="w-48 mt-4"/>
           </View>
                     
   </View>

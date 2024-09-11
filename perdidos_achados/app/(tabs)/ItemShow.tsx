@@ -15,6 +15,7 @@ const ItemShow = ({ route, navigation }) => {
   const user = getCurrentUser();
   const [postCondition, setPostContidion] = useState(false)
   //TODO: See how well the variable works
+  //TODO: Perguntar docente se crio as reivindicações no momento que crio o documento (para mostrar 0 devo criar a primeira vez...)
   const [foto, setFoto] = useState({});
   const [selected, setSelected] = useState({})
   const PlaceholderImage = require('../../assets/images/no-photo.jpg');
@@ -73,7 +74,7 @@ const ItemShow = ({ route, navigation }) => {
     usersID: []
   });
 
-
+  
 
 
 
@@ -148,10 +149,34 @@ const ItemShow = ({ route, navigation }) => {
   if (loading) {
     return <Text>Carregando</Text>;
   }
+
+
   return (
     <View>
-      {postCondition ? <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
-        : <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>}
+  
+      {postCondition ? (
+
+        <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao} titulo2="Ver Reivindicacoes" onPress2={
+          async() => {
+            const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID), limit(1));
+            const querySnapshot = await getDocs(q);
+            //TIRAR ISTO, DEVE MOSTRAR "NÃO HÁ REIVINDICAÇÕES"
+            if (querySnapshot.size != 0) {
+              querySnapshot.forEach(async (docs) => {
+              console.log(docs)
+              const cityRef = doc(db, 'reivindicacoes', docs.id);
+              console.log(docs.id, " => ", docs.data());
+
+              navigation.navigate('Reivindicacoes',{reivindicacoes: docs.data()})
+            });
+          }
+        }
+      } ></Picture>
+      ) : (
+
+          <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+        )
+      }
     </View>
   )
 }
