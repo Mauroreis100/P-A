@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { db } from '../../api/firebaseConfig'; // 
 import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
@@ -12,11 +13,20 @@ const SignUp = () =>{
   const [form, setForm] = useState({
     username: "",
     email: "",
+    numero:"",
     password: "",
   });
   const handleRegister = async () => {
     try {
       const user = await registerUser(form.email, form.password);
+      const id=user.uid;
+      await setDoc(doc(db, "users", user.uid), {
+        name: form.username,//Ver duplicatas de usuários?
+        email: form.email,//Email é que não deve ser iguais...!
+        numero: form.numero,
+        role: 'user',  // Default role, could be customizable
+        userID: id
+      });
       console.log('Registered user:', user);
       router.replace('/home');
     } catch (error) {
@@ -53,7 +63,7 @@ const SignUp = () =>{
         <FormField
             title="Username"
             value={form.username}
-            handleChangeText={(e) => setForm({ ...form, email: e })}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-7"
           />
         <FormField
@@ -62,6 +72,13 @@ const SignUp = () =>{
             handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt-7"
             keyboardType="email-address"
+          />
+          <FormField
+            title="Número de telefone"
+            value={form.numero}
+            handleChangeText={(e) => setForm({ ...form, numero: e })}
+            otherStyles="mt-7"
+            keyboardType="number"
           />
           <FormField
             title="Password"
