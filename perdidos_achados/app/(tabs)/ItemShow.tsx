@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { collection, doc, addDoc, getDocs, getDoc, query, where, updateDoc, arrayUnion, arrayRemove, limit } from 'firebase/firestore';
+import { collection, doc, addDoc, getDocs, getDoc, query, where, orderBy, updateDoc, arrayUnion, arrayRemove, limit } from 'firebase/firestore';
 
 import { db } from '../../api/firebaseConfig'; // 
 import CustomButton from '@/components/CustomButton';
 import Picture from '@/components/Picture';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { firebase } from '@react-native-firebase/auth';
 const ItemShow = ({ route, navigation }) => {
   const objectoID = route.params.id;
   const getCurrentUser = () => {
@@ -21,6 +22,7 @@ const ItemShow = ({ route, navigation }) => {
   const PlaceholderImage = require('../../assets/images/no-photo.jpg');
   const [loading, setLoading] = useState(true);
   const [showAppOptions, setShowAppOptions] = useState(false);
+
   const [form, setForm] = useState({
     id: '',
     publicadorID: '',
@@ -74,7 +76,7 @@ const ItemShow = ({ route, navigation }) => {
     usersID: []
   });
 
-  
+
 
 
 
@@ -150,32 +152,49 @@ const ItemShow = ({ route, navigation }) => {
     return <Text>Carregando</Text>;
   }
 
+  const getReivindicacoes = async () => {
+    try {
+      const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        navigation.navigate('Reivindicacoes',{reivindicacoes: {
+        objectoID: doc.data().objectoID,
+        usersID: doc.data().usersID,
+        dataCriacao: doc.data().createdAt
+        }})
+      });
+    } catch (e) {
+      console.error('No document: ', e);
+      Alert.alert('Error', 'Something went wrong while retrievning Reivindicações?');
+    } finally {
 
+
+    }
+    /*const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID), limit(1));
+    const querySnapshot = await getDocs(q);
+    //TODO: CRIAR DOCUMENTO DE REINDIVICAÇÕES, para que mostra o número de reindivicações Multiplicidade: nenhum ou muitos"
+    if (querySnapshot.size==1) {
+      querySnapshot.forEach(async (docs) => {
+        console.log("UMA VEZ SÓ")
+        console.log(docs.id, " uma => ", docs.data());
+      
+    //navigation.navigate('Reivindicacoes',{reivindicacoes: selected})
+    });
+  }
+  */
+  }
   return (
     <View>
-  
+
       {postCondition ? (
 
-        <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao} titulo2="Ver Reivindicacoes" onPress2={
-          async() => {
-            const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID), limit(1));
-            const querySnapshot = await getDocs(q);
-            //TODO: CRIAR DOCUMENTO DE REINDIVICAÇÕES, para que mostra o número de reindivicações Multiplicidade: nenhum ou muitos"
-            if (querySnapshot.size != 0) {
-              querySnapshot.forEach(async (docs) => {
-              console.log(docs)
-              const cityRef = doc(db, 'reivindicacoes', docs.id);
-              console.log(docs.id, " => ", docs.data());
-
-              navigation.navigate('Reivindicacoes',{reivindicacoes: docs.data()})
-            });
-          }
-        }
-      } ></Picture>
+        <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao} titulo2="Ver Reivindicacoes" onPress2={getReivindicacoes}
+        ></Picture>
       ) : (
 
-          <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
-        )
+        <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
+      )
       }
     </View>
   )

@@ -16,7 +16,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { AuthContext } from '@/contexts/AuthContext';
 import CustomDrawerContent from '@/components/LogOutCustomDrawer';
 import MinhasPublicacoes from './minhas_publicacoes';
-import showReivindicacoes from './showReivindicacoes';
+import ShowReivindicacoes from './ShowReivindicacoes';
 const TabLayout = () => {
   const { user, logout } = useContext(AuthContext);
   const Drawer = createDrawerNavigator();
@@ -38,7 +38,7 @@ const TabLayout = () => {
         <Stack.Screen name="Publicar" component={Publicar} />
         <Stack.Screen name="Contact_Info" component={Contact_Info_Form} />
         <Stack.Screen name="ItemShow" component={ItemShow} />
-        <Stack.Screen name="Reivindicacoes" component={showReivindicacoes} />
+        <Stack.Screen name="Reivindicacoes" component={ShowReivindicacoes} />
       </Stack.Navigator>
     );
   }
