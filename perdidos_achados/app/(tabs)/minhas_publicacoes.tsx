@@ -40,9 +40,9 @@ const MinhasPublicacoes = ({navigation}) => {
     <ScrollView>
     <View className="items-center">
     <FlatList
-data={data}
-keyExtractor={item => item.id}
-renderItem={({ item }) => (
+      data={data}
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => (
   <ListItem estado={item.estado} name={item.nome} date={item.data} onPress={()=>{
  navigation.navigate('ItemShow',{id:item.id})
 }
