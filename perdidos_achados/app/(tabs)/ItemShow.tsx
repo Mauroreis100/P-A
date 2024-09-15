@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Alert, Button } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { collection, doc, addDoc, getDocs, getDoc, query, where, orderBy, updateDoc, arrayUnion, arrayRemove, limit } from 'firebase/firestore';
+import { collection,deleteDoc, doc, addDoc, getDocs, getDoc, query, where, orderBy, updateDoc, arrayUnion, arrayRemove, limit } from 'firebase/firestore';
 
 import { db } from '../../api/firebaseConfig'; // 
 import CustomButton from '@/components/CustomButton';
@@ -151,7 +151,19 @@ const ItemShow = ({ route, navigation }) => {
   if (loading) {
     return <Text>Carregando</Text>;
   }
-
+const apagarObjecto = async () =>{
+  //Mensagem de confirmação
+  try {
+    await deleteDoc(doc(db, "objecto", objectoID));
+    console.log("DELETING"+objectoID)
+    navigation.goBack()
+  } catch (error) {
+    console.error
+  }
+}
+const editarItem = async () => {
+  
+}
   const getReivindicacoes = async () => {
     try {
       const q = query(collection(db, "reivindicacoes"), where("objectoID", "==", objectoID));
@@ -189,7 +201,8 @@ const ItemShow = ({ route, navigation }) => {
 
       {postCondition ? (
 
-        <Picture foto={form.foto} titulo="Editar" estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao} titulo2="Ver Reivindicacoes" onPress2={getReivindicacoes}
+        <Picture foto={form.foto} titulo="Editar"  onPress={editarItem} estado={form.estado} nome={form.nome} data={form.data} localizacao={form.localizacao} titulo2="Ver Reivindicacoes" onPress2={getReivindicacoes}
+        titulo3="Eliminar" onPress3={apagarObjecto}
         ></Picture>
       ) : (
 
