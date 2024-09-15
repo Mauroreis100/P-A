@@ -5,7 +5,7 @@ import CustomButton from '@/components/CustomButton';
 import DateTimePicker from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 import { router } from 'expo-router';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc,setDoc,doc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -20,20 +20,21 @@ const getCurrentUser = () => {
   const itemDetails = route.params;
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
+    id: itemDetails.form.id,
     publicadorID: user?.uid,
     estado: itemDetails.form.estado,
     foto: itemDetails.form.foto,
     nome: itemDetails.form.nome,
     data: itemDetails.form.data,
     localizacao:itemDetails.form.localizacao,
-    numero:"",
-    email:""
+    numero:itemDetails.form.numero,
+    email:itemDetails.form.email
   });
   const { publicadorID,estado,foto,nome, data, localizacao,numero,email } = form;
   const handleSubmit = async () => {
     const newItem = {
       publicadorID,
-      estado,
+      estado:'achado',
       foto,
       nome,
       data,
@@ -44,13 +45,19 @@ const getCurrentUser = () => {
     };
 
     try {
-      const docRef = await addDoc(collection(db, 'objecto'), newItem);
-      console.log('Document written with ID: ', docRef.id);
+      if(form.id){
+
+        await setDoc(doc(db, 'objecto',form.id), newItem);
+        console.log('Document written with ID: ', form.id);
+      }else{
+        const docRef = await addDoc(collection(db, 'objecto'), newItem);
+        console.log('Document written with ID: ', docRef.id);
+      }
       Alert.alert('Publicado com sucesso', 'Fazendo o mundo um melhor lugar...');
       navigation.navigate('Home')
     } catch (e) {
       console.error('Error adding document: ', e);
-      Alert.alert('Error', 'Something went wrong while adding the Document');
+      Alert.alert('Error', 'Something went wrong while adding the Document'+e);
     }
   };
   return (
@@ -76,7 +83,7 @@ const getCurrentUser = () => {
       </FormField>
 
  <CustomButton
-            title="Publicar"
+            title="Confirmar"
             containerStyles="mt-8 w-80"
             handlePress={()=>
               {

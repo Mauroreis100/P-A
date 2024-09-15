@@ -1,5 +1,5 @@
 import { SafeAreaView, Modal, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FormField from '@/components/FormField'
 import CustomButton from '@/components/CustomButton';
 import DateTimePicker from 'react-native-ui-datepicker';
@@ -12,29 +12,43 @@ const Publicar = ({ route, navigation }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedImageText, setSelectedImageText] = useState("No Photo");
   const objState=`Nome do ${objectoState}`
+  //TODO: Ao editar permite que mude de achado para perdido? [Perguntar Supervisor]
   //TODO: Change data format to timestamp e ficar igual ao modified, created. YYYY-MM-DDTHH:mm:ss.sssZ
   const [form, setForm] = useState({
-    estado: objectoState,
-    foto:{},
-    nome: "",
-    data: "",
-    cor:"",
-    localizacao:"",
-    numero:0,
-    email:""
+    id:route.params.id,//YES
+    publicadorID: route.params.publicadorID,//YES
+    estado: route.params.objectoState,
+    foto:route.params.foto, //YES
+    nome: route.params.nome, //YES
+    data: route.params.data, //YES
+    cor:route.params.cor,
+    localizacao:route.params.localizacao, //YES
+    numero:route.params.numero, //YES
+    email:route.params.email //YES
   });
+  const [editPhoto,setEditPhoto]=useState(form.foto)
+  //NOME DO BOTÃO DEVE SER EDITAR QUANDO VEM DO EDITA.
   const [date, setDate] = useState(dayjs());
   const [modalVisible, setModalVisible] = useState(false);
+  useEffect(() => {
+    if(form.foto){
+      setSelectedImage(form.foto.assets[0].uri);
+      setSelectedImageText(form.foto.assets[0].fileName)
+      setForm({ ...form, foto:  form.foto});
 
+    }
+  }, []);
   const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      quality: 1,
-    });
+    
 
+    let result = await ImagePicker.launchImageLibraryAsync({
+      quality: 0,
+    });
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
       setSelectedImageText(result.assets[0].fileName)
       setForm({ ...form, foto:  result})
+      console.log(result)
       console.log("Detalhes da foto escolhida:"+form.foto);
     } else {
       alert('You did not select any image.');
@@ -50,6 +64,7 @@ const Publicar = ({ route, navigation }) => {
             containerStyles="mt-8 w-80"
             handlePress={() => {
               pickImageAsync()
+              
             }}/>
 
       <FormField

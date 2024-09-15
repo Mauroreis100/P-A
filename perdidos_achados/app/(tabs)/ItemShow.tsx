@@ -66,7 +66,6 @@ const ItemShow = ({ route, navigation }) => {
       console.error('Error adding document: ', e);
       Alert.alert('Error', 'Something went wrong while retrieving the Document');
     } finally {
-
       setLoading(false);
     }
   }
@@ -162,7 +161,7 @@ const apagarObjecto = async () =>{
   }
 }
 const editarItem = async () => {
-  
+  navigation.navigate('Publicar',form)
 }
   const getReivindicacoes = async () => {
     try {
