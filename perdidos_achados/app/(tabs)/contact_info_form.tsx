@@ -34,7 +34,7 @@ const getCurrentUser = () => {
   const handleSubmit = async () => {
     const newItem = {
       publicadorID,
-      estado:'achado',
+      estado:estado,
       foto,
       nome,
       data,

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View,Image } from 'react-native'
 import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-
+// <Text className="font-serif text-gray-500 py-1 text-xs">{props.data}</Text>
 const ListItem = (props) => {
   return (
     <TouchableOpacity onPress={props.onPress}>
@@ -16,7 +16,7 @@ const ListItem = (props) => {
           <View classNane="">
             <View className="px-3">
             <Text className="capitalize text-blue-500 py-1 text-2xl">{props.name}</Text>
-            <Text className="font-serif text-gray-500 py-1 text-xs">{props.data}</Text>
+            
             <Text className="font-serif text-gray-500 py-1 text-xs">Quarta-feira, 20 de Agosto de 2024</Text>
             </View>
           </View>

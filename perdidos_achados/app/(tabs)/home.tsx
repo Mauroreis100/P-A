@@ -1,30 +1,33 @@
-import { StyleSheet, Text, View,ScrollView,StatusBar, Modal, FlatList } from 'react-native'
+import { StyleSheet, Text, View,ScrollView,StatusBar, Modal, FlatList, Button } from 'react-native'
 import React, { isValidElement, useEffect, useState } from 'react'
 import { Redirect, router } from "expo-router";
 import Picture from '../../components/Picture';
 import { SafeAreaView } from "react-native-safe-area-context";
 import FloatingButton from '@/components/FloatingButton';
 import SelectOptionModal from '@/components/SelectOptionModal';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs,query, where, orderBy, limit, Timestamp } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 import ListItem from '@/components/ListItem';
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 const Home = ({navigation}) => {
-/*  const [isLoged, setLoggedUser] = useState({
+/*     <Button title='ACHADOS' onPress={async () =>  {
+                //alert("TESTE")
+                const citiesRef = collection(db, "objecto");
+                const q = query(citiesRef, where("estado", "==", "perdido"), limit(10));
+                const querySnapshot = await getDocs(q);
+                  querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data().createdAt);
+            });
+              }
 
-    isLogged: false,
-  });
-  const getCurrentUser = () => {
-    const auth=getAuth()
-    if (auth!=null){
-      setLoggedUser({ ...loggedUser, publicador: auth, isLogged: true })
-      return auth.currentUser;
-      
-    }
-    return auth;
-  }
-  getCurrentUser()
-  TODO: Show a different component for all the user's posts
+              }
+              />
+              <Button title='PERDIDOS' onPress={()=> {
+
+                alert("TESTE")
+              }
+              }/>
   */
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -73,6 +76,20 @@ const Home = ({navigation}) => {
         </Modal>
       <ScrollView>
             <View className="items-center">
+              
+            <View
+      style={[
+        
+        {
+          // Try setting `flexDirection` to `"row"`.
+          flexDirection: 'row',
+        },
+      ]}>
+
+              
+           
+    </View>
+
             <FlatList
         data={data}
         keyExtractor={item => item.id}

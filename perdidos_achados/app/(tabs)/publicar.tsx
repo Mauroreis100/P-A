@@ -42,7 +42,7 @@ const Publicar = ({ route, navigation }) => {
     
 
     let result = await ImagePicker.launchImageLibraryAsync({
-      quality: 0,
+      quality: 1,
     });
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);

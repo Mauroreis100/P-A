@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View,Button } from 'react-native'
 import React, { useContext } from 'react'
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -17,6 +17,7 @@ import { AuthContext } from '@/contexts/AuthContext';
 import CustomDrawerContent from '@/components/LogOutCustomDrawer';
 import MinhasPublicacoes from './minhas_publicacoes';
 import ShowReivindicacoes from './ShowReivindicacoes';
+import CustomButton from '@/components/CustomButton';
 const TabLayout = () => {
   const { user, logout } = useContext(AuthContext);
   const Drawer = createDrawerNavigator();
@@ -24,7 +25,24 @@ const TabLayout = () => {
   function MyDrawer() {
     return (
       <Drawer.Navigator initialRouteName='Main' drawerContent={(props) => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name="Main"component={Home} />
+        <Drawer.Screen name="Main"component={Home} options={{ 
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: '#073F82',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }, 
+          /*
+          FILTROS FEATURE
+          headerRight: () => (
+            <Button
+              onPress={() => alert('This is a button!')}
+              title="Filtros"
+            />
+          ),*/
+          }} />
         <Drawer.Screen name="Minhas Publicacoes" component={MinhasPublicacoes} />
         <Drawer.Screen name="FAQ" component={Faq} />
       </Drawer.Navigator>
@@ -39,7 +57,9 @@ const TabLayout = () => {
         <Stack.Screen name="Contact_Info" component={Contact_Info_Form} />
         <Stack.Screen name="ItemShow" component={ItemShow} />
         <Stack.Screen name="Reivindicacoes" component={ShowReivindicacoes} />
+        
       </Stack.Navigator>
+      
     );
   }
   return (
