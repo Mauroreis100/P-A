@@ -16,7 +16,6 @@ const ItemShow = ({ route, navigation }) => {
   const user = getCurrentUser();
   const [postCondition, setPostContidion] = useState(false)
   //TODO: See how well the variable works
-  //TODO: Perguntar docente se crio as reivindicações no momento que crio o documento (para mostrar 0 devo criar a primeira vez...)
   const [foto, setFoto] = useState({});
   const [selected, setSelected] = useState({})
   const PlaceholderImage = require('../../assets/images/no-photo.jpg');
@@ -204,7 +203,6 @@ const editarItem = async () => {
         titulo3="Eliminar" onPress3={apagarObjecto}
         ></Picture>
       ) : (
-
         <Picture foto={form.foto} titulo="Reivindicar" estado={form.estado} onPress={handleRetrieve} nome={form.nome} data={form.data} localizacao={form.localizacao}></Picture>
       )
       }

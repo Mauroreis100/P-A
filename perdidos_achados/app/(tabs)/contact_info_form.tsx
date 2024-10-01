@@ -9,8 +9,6 @@ import { collection, addDoc,setDoc,doc } from 'firebase/firestore';
 import { db } from '../../api/firebaseConfig'; // 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-//TODO: COlocar quem foi o user que publicou o item
-
 const Contact_Info_Form = ({ route, navigation }) => {
 const getCurrentUser = () => {
   const auth=getAuth()

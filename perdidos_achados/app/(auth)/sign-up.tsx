@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, ScrollView, Image,StyleSheet, Text, View } from 'react-native';
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { db } from '../../api/firebaseConfig'; // 
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { Link, router } from "expo-router";
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { registerUser } from '../../api/authFunctions'; // Adjust the path as necessary
-
+import { images } from "../../constants";
 const SignUp = () =>{
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
@@ -42,26 +42,25 @@ const SignUp = () =>{
   };
 
   return (
-   <SafeAreaView className="">
-        <View className="bg-white h-1/6 justify-center items-center">
-          <Text>P & A</Text>
-        </View>
-        <View className="br-white h-1/6 justify-center items-center flex flex-row gap-4">
-        <View className="flex justify-center pt-5 flex-row gap-2">
-            
-            <Link href="/sign-in" className="text-lg font-psemibold  text-gray-100  ">
-              Sign In
-            </Link>
-        </View>
-        <View className="flex justify-center pt-5 flex-row gap-2">
-        <Text className="text-lg font-psemibold text-secondary  underline decoration-4 underline-offset-8 ">
-              Sign Up
-            </Text>
-        </View>
-        </View>
-        <View className="bg-primary h-4/6 justify-center items-center">
+    <SafeAreaView className="bg-primary h-full">
+    <ScrollView>
+
+      <View className="w-full flex justify-center h-full px-4 my-6"
+        style={{
+          minHeight: Dimensions.get("window").height - 100,
+        }}
+      >
+        <View className="flex items-center">
+        <Image
+            className="w-[40px] h-[40px]"
+            resizeMode="contain"
+            source={images.logoPA}
+          />
+          </View>
+        <View className="bg-primary flex items-center justify-between">
+         
         <FormField
-            title="Username"
+            title="Nome"
             value={form.username}
             handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-7"
@@ -88,11 +87,15 @@ const SignUp = () =>{
           />
           <CustomButton
             title="Cadastrar"
-            containerStyles="mt-8 w-80"
+            containerStyles="mt-8 w-80 bg-white"
+            textStyles="text-primary"
            handlePress={handleRegister}
           />
+
         </View>
-      </SafeAreaView>
+      </View>
+    </ScrollView>
+  </SafeAreaView>
   )
 }
 

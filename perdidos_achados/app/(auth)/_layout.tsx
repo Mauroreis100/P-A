@@ -10,13 +10,33 @@ const Layout = () => {
       <Stack.Screen
         name="sign-in"
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: 'Log In',
+          headerBackVisible:false,
+          headerBackTitleStyle: { fontSize: 30 },
+          headerStyle: {
+            backgroundColor: '#073F82',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }, 
         }}
       />
       <Stack.Screen
         name="sign-up"
         options={{
-          headerShown: false,
+          headerShown: true,
+
+          title: 'Sign Up',
+          headerBackTitleStyle: { fontSize: 30 },
+          headerStyle: {
+            backgroundColor: '#073F82',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          }, 
         }}
       />
     </Stack>
